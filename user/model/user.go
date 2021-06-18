@@ -1,17 +1,13 @@
 package model
 
 type User struct {
-	ID        int
-	UserName  string
-	Telephone string
-	Email     string
-	Age       string
-	CreateTime int
-}
-
-type UserLogin struct {
-	ID       int
-	Account  string
+	ID           int
+	UserName     string
+	Account      string
 	HashPassword string
+	Telephone    string
+	Email        string
+	Age          int
+	CreateTime   int
+	UpdateTime   int
 }
-
