@@ -6,9 +6,12 @@ type User struct {
 	Telephone string
 	Email     string
 	Age       string
+	CreateTime int
 }
 
 type UserLogin struct {
 	ID       int
-	PassWord string
+	Account  string
+	HashPassword string
 }
+
