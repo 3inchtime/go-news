@@ -1,6 +1,7 @@
 package dao
 
 import (
+	"database/sql"
 	"github.com/sirupsen/logrus"
 	"time"
 	"user/model"
@@ -23,4 +24,18 @@ func (d *Dao) CreateUser (u *model.User) (rows int, err error) {
 	defer insertSQL.Close()
 	id, _ := res.LastInsertId()
 	return int(id), nil
+}
+
+func (d *Dao) GetUserInfoByAccount (account string) (*model.User, error) {
+	querySQL, err := d.DB.Prepare("SELECT id, user_name, account, password FROM user WHERE account = ?")
+	if err != nil {
+		logrus.Errorf("Prepare Query SQL Error: %s", err.Error())
+	}
+	u := new(model.User)
+	err = querySQL.QueryRow(account).Scan(&u.ID, &u.UserName, &u.Account, &u.HashPassword)
+	if err != nil && err != sql.ErrNoRows {
+		logrus.Errorf("Query PurcaseDetail Error: %s", err.Error())
+		return nil, err
+	}
+	return u, nil
 }
