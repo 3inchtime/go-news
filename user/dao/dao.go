@@ -1,12 +1,12 @@
 package dao
 
 import (
-	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/jmoiron/sqlx"
 )
 
 type Dao struct {
-	DB *sql.DB
+	DB *sqlx.DB
 }
 
 func NewDao() *Dao {
@@ -15,8 +15,8 @@ func NewDao() *Dao {
 	}
 }
 
-func NewDB() *sql.DB {
-	Mysql, err := sql.Open("mysql", "root:123456@tcp(localhost:3306)/user?charset=utf8mb4")
+func NewDB() *sqlx.DB {
+	Mysql, err := sqlx.Open("mysql", "root:123456@tcp(192.168.1.103:3306)/user?charset=utf8mb4")
 	if err != nil {
 		panic(err)
 	}

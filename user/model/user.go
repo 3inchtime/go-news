@@ -1,19 +1,19 @@
 package model
 
 type User struct {
-	ID           int
-	UserName     string
-	Account      string
-	HashPassword string
-	Telephone    string
-	Email        string
-	Age          int
-	CreateTime   int
-	UpdateTime   int
+	UserID     string
+	UserName   string
+	Telephone  string
+	Email      string
+	Age        int
+	CreateTime int64
+	UpdateTime int64
 }
 
-type UserBaseInfo struct {
-	UserName     string `json:"user_name"`
-	Account      string `json:"account"`
-	HashPassword string `json:"hash_password"`
+type UserAccountInfo struct {
+	UserID     string
+	Account    string
+	Password   string
+	CreateTime int64
+	UpdateTime int64
 }
