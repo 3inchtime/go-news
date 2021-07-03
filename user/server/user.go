@@ -1,6 +1,7 @@
 package server
 
 import (
+	"errors"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 	"net/http"
@@ -50,7 +51,7 @@ func (us *UserServer) CreateNewUser(c *gin.Context) {
 	return
 }
 
-func (us *UserServer) UserLogin(c *gin.Context)  {
+func (us *UserServer) UserLogin(c *gin.Context) {
 	var ua model.UserAccountInfo
 	if err := c.ShouldBindJSON(&ua); err != nil {
 		c.AbortWithStatusJSON(
@@ -74,7 +75,8 @@ func (us *UserServer) UserLogin(c *gin.Context)  {
 	} else {
 		check := utils.ComparePasswords(accountInfo.Password, ua.Password)
 		if check {
-			user, _ := us.Service.QueryUserInfo(ua.UserID)
+			logrus.Infof("check userID: %s ok", accountInfo.UserID)
+			user, _ := us.Service.QueryUserInfo(accountInfo.UserID)
 			jwt, _ := utils.GenJWT(user)
 			c.Header("Authorization", jwt)
 			c.AbortWithStatusJSON(
@@ -90,4 +92,24 @@ func (us *UserServer) UserLogin(c *gin.Context)  {
 			return
 		}
 	}
+}
+
+func (us *UserServer) ModifyUser(c *gin.Context) {
+	authHeader := c.Request.Header.Get("Authorization")
+	if authHeader == "" {
+		c.JSON(http.StatusForbidden, gin.H{
+			"error": errors.New("no authorization"),
+		})
+		return
+	}
+	logrus.Infof("parse jwt token: %s\n", authHeader)
+	ua, err := utils.ParseJWT(authHeader)
+	if err != nil{
+		c.JSON(http.StatusForbidden, gin.H{
+			"error": errors.New("authorization parse failed"),
+		})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"UserID": ua.UserID})
+	return
 }

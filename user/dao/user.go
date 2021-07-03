@@ -6,7 +6,7 @@ import (
 	"user/model"
 )
 
-func (d *Dao) CreateUser (u *model.User, ua *model.UserAccountInfo) error {
+func (d *Dao) CreateUser(u *model.User, ua *model.UserAccountInfo) error {
 	tx, err := d.DB.Begin()
 	if err != nil {
 		logrus.Errorf("Begin Tx Error: %s\n", err.Error())
@@ -37,8 +37,7 @@ func (d *Dao) CreateUser (u *model.User, ua *model.UserAccountInfo) error {
 	return nil
 }
 
-
-func (d *Dao) CheckUserPwd (account string) (*model.UserAccountInfo, error) {
+func (d *Dao) CheckUserPwd(account string) (*model.UserAccountInfo, error) {
 	querySQL, err := d.DB.Prepare("SELECT user_id, password FROM ts_account WHERE account = ?")
 	if err != nil {
 		logrus.Errorf("Prepare Query SQL Error: %s", err.Error())
@@ -50,11 +49,12 @@ func (d *Dao) CheckUserPwd (account string) (*model.UserAccountInfo, error) {
 		logrus.Errorf("Query PurcaseDetail Error: %s", err.Error())
 		return nil, err
 	}
-	logrus.Infof("Query account result: %+v",*ua)
+	logrus.Infof("SQL result: %+v", *ua)
 	return ua, nil
 }
 
-func (d *Dao) QueryUserInfo (userID string) (*model.User, error) {
+func (d *Dao) QueryUserInfo(userID string) (*model.User, error) {
+	logrus.Infof("query user info: %s", userID)
 	querySQL, err := d.DB.Prepare("SELECT * FROM ts_user WHERE user_id = ?")
 	if err != nil {
 		logrus.Errorf("Prepare query sql error: %s", err.Error())
@@ -66,6 +66,6 @@ func (d *Dao) QueryUserInfo (userID string) (*model.User, error) {
 		logrus.Errorf("Query user info rror: %s", err.Error())
 		return nil, err
 	}
-	logrus.Infof("Query account result: %+v",*u)
+	logrus.Infof("Query user info: %+v", *u)
 	return u, nil
 }

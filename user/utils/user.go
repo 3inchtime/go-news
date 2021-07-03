@@ -15,7 +15,6 @@ func GenUUID() (string, error) {
 	return userID.String(), nil
 }
 
-
 func HashAndSalt(pwdStr string) (pwdHash string, err error) {
 	pwd := []byte(pwdStr)
 	hash, err := bcrypt.GenerateFromPassword(pwd, bcrypt.MinCost)
@@ -27,7 +26,6 @@ func HashAndSalt(pwdStr string) (pwdHash string, err error) {
 }
 
 func ComparePasswords(hashedPwd string, plainPwd string) bool {
-	logrus.Info("Checking password")
 	byteHash := []byte(hashedPwd)
 	bytePwd := []byte(plainPwd)
 	err := bcrypt.CompareHashAndPassword(byteHash, bytePwd)

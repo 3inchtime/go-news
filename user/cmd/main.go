@@ -19,6 +19,7 @@ func main() {
 
 	userGroup.POST("/reg", userServer.CreateNewUser)
 	userGroup.POST("/login", userServer.UserLogin)
+	userGroup.POST("/modify", userServer.ModifyUser)
 
 	err := r.Run(":8888")
 

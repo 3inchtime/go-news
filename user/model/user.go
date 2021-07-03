@@ -22,12 +22,6 @@ type UserAccountInfo struct {
 
 type UserLoginClaims struct {
 	UserID         string
-	UserName    string
-	StandardClaims jwt.StandardClaims
+	UserName       string
+	jwt.StandardClaims
 }
-
-func (u UserLoginClaims) Valid() error {
-	panic("implement me")
-}
-
-
