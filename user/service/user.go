@@ -24,3 +24,13 @@ func (us *UserService) CheckUser(ua *model.UserAccountInfo) (*model.UserAccountI
 	logrus.Infof("Query account result: %+v",*accountInfo)
 	return accountInfo, nil
 }
+
+func (us *UserService) QueryUserInfo (userID string) (*model.User, error) {
+	userInfo, err := us.dao.QueryUserInfo(userID)
+	if err != nil {
+		logrus.Error(err.Error())
+		return nil, err
+	}
+	logrus.Infof("Query user result: %+v",*userInfo)
+	return userInfo, nil
+}

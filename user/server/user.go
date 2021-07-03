@@ -74,9 +74,14 @@ func (us *UserServer) UserLogin(c *gin.Context)  {
 	} else {
 		check := utils.ComparePasswords(accountInfo.Password, ua.Password)
 		if check {
+			user, _ := us.Service.QueryUserInfo(ua.UserID)
+			jwt, _ := utils.GenJWT(user)
+			c.Header("Authorization", jwt)
 			c.AbortWithStatusJSON(
 				http.StatusOK,
-				gin.H{"user_id": accountInfo.UserID})
+				gin.H{
+					"user_id": accountInfo.UserID,
+				})
 			return
 		} else {
 			c.AbortWithStatusJSON(

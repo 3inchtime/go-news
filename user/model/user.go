@@ -1,5 +1,7 @@
 package model
 
+import "github.com/dgrijalva/jwt-go"
+
 type User struct {
 	UserID     string
 	UserName   string
@@ -17,3 +19,15 @@ type UserAccountInfo struct {
 	CreateTime int64
 	UpdateTime int64
 }
+
+type UserLoginClaims struct {
+	UserID         string
+	UserName    string
+	StandardClaims jwt.StandardClaims
+}
+
+func (u UserLoginClaims) Valid() error {
+	panic("implement me")
+}
+
+

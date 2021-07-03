@@ -53,3 +53,19 @@ func (d *Dao) CheckUserPwd (account string) (*model.UserAccountInfo, error) {
 	logrus.Infof("Query account result: %+v",*ua)
 	return ua, nil
 }
+
+func (d *Dao) QueryUserInfo (userID string) (*model.User, error) {
+	querySQL, err := d.DB.Prepare("SELECT * FROM ts_user WHERE user_id = ?")
+	if err != nil {
+		logrus.Errorf("Prepare query sql error: %s", err.Error())
+	}
+	u := new(model.User)
+	err = querySQL.QueryRow(userID).Scan(&u.UserID, &u.UserName, &u.Telephone, &u.Email, &u.Age, &u.CreateTime, &u.UpdateTime)
+
+	if err != nil && err != sql.ErrNoRows {
+		logrus.Errorf("Query user info rror: %s", err.Error())
+		return nil, err
+	}
+	logrus.Infof("Query account result: %+v",*u)
+	return u, nil
+}
