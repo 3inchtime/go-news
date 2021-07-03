@@ -30,6 +30,7 @@ func (us *UserServer) CreateNewUser(c *gin.Context) {
 	ua.UserID = userID
 	ua.CreateTime = createTime
 	ua.UpdateTime = createTime
+	ua.Password, _ = utils.HashAndSalt(ua.Password)
 
 	var u model.User
 	u.UserID = userID
@@ -57,22 +58,31 @@ func (us *UserServer) UserLogin(c *gin.Context)  {
 			gin.H{"error": err.Error()})
 		return
 	}
+	logrus.Infof("Login request: %+v", ua)
 
-	userID, err := us.Service.CheckUser(&ua)
+	accountInfo, err := us.Service.CheckUser(&ua)
 	if err != nil {
 		c.AbortWithStatusJSON(
 			http.StatusForbidden,
 			gin.H{"error": "Login Failed"})
 		return
-	} else if userID == "" {
+	} else if accountInfo == nil {
 		c.AbortWithStatusJSON(
 			http.StatusForbidden,
 			gin.H{"error": "Login Failed"})
 		return
 	} else {
-		c.AbortWithStatusJSON(
-			http.StatusOK,
-			gin.H{"user_id": userID})
-		return
+		check := utils.ComparePasswords(accountInfo.Password, ua.Password)
+		if check {
+			c.AbortWithStatusJSON(
+				http.StatusOK,
+				gin.H{"user_id": accountInfo.UserID})
+			return
+		} else {
+			c.AbortWithStatusJSON(
+				http.StatusForbidden,
+				gin.H{"error": "Login Failed"})
+			return
+		}
 	}
 }

@@ -38,16 +38,18 @@ func (d *Dao) CreateUser (u *model.User, ua *model.UserAccountInfo) error {
 }
 
 
-func (d *Dao) CheckUserPwd (account, password string) (string, error) {
-	querySQL, err := d.DB.Prepare("SELECT user_id FROM ts_account WHERE account = ? and password = ?")
+func (d *Dao) CheckUserPwd (account string) (*model.UserAccountInfo, error) {
+	querySQL, err := d.DB.Prepare("SELECT user_id, password FROM ts_account WHERE account = ?")
 	if err != nil {
 		logrus.Errorf("Prepare Query SQL Error: %s", err.Error())
 	}
-	var userID string
-	err = querySQL.QueryRow(account, password).Scan(&userID)
+	ua := new(model.UserAccountInfo)
+	err = querySQL.QueryRow(account).Scan(&ua.UserID, &ua.Password)
+
 	if err != nil && err != sql.ErrNoRows {
 		logrus.Errorf("Query PurcaseDetail Error: %s", err.Error())
-		return "", err
+		return nil, err
 	}
-	return userID, nil
+	logrus.Infof("Query account result: %+v",*ua)
+	return ua, nil
 }
