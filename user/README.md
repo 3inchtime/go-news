@@ -18,7 +18,7 @@ CREATE TABLE `ts_account` (
                               PRIMARY KEY (`user_id`),
                               UNIQUE KEY `ts_account_account_uindex` (`account`),
                               UNIQUE KEY `ts_account_user_id_uindex` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 CREATE TABLE `ts_user` (
                            `user_id` varchar(64) COLLATE utf8mb4_bin NOT NULL,
@@ -30,7 +30,7 @@ CREATE TABLE `ts_user` (
                            `update_time` int NOT NULL,
                            PRIMARY KEY (`user_id`),
                            UNIQUE KEY `ts_user_user_id_uindex` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 ```
 
 #### User Server
