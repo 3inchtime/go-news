@@ -6,14 +6,15 @@ import (
 	"user/utils"
 )
 
-func (us *GRPCServer) CheckToken(ctx context.Context, userInfoRequest *pb.TokenCheckRequest, userInfoResponse *pb.TokenCheckResponse) error {
-	token := userInfoRequest.JwtToken
+
+func (us *GRPCServer) TokenCheck (ctx context.Context, request *pb.TokenCheckRequest, response *pb.TokenCheckResponse) error {
+	token := request.JwtToken
 	ua, err := utils.ParseJWT(token)
 	if err != nil {
 		return err
 	}
-	userInfoResponse.UserId = ua.UserID
-	userInfoResponse.UserName = ua.UserName
+	response.UserId = ua.UserID
+	response.UserName = ua.UserName
 
 	return nil
 }

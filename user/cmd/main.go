@@ -2,35 +2,32 @@ package main
 
 import (
 	"github.com/micro/go-micro/v2/registry"
-	"github.com/micro/go-micro/v2/web"
 	"github.com/micro/go-plugins/registry/consul/v2"
 	"os"
 	"os/signal"
 	"syscall"
-	"time"
+	"user/grpc"
 	"user/http"
 )
 
 func main() {
-	httpServer := http.Init()
-
 	consulReg := consul.NewRegistry(
 		registry.Addrs("192.168.1.103"),
 	)
 
-	microService := web.NewService(
-		web.Name("go-news-user-http"),
-		web.RegisterTTL(time.Second*30),      //设置注册服务的过期时间
-		web.RegisterInterval(time.Second*20), //设置间隔多久再次注册服务
-		web.Address(":18001"),
-		web.Handler(httpServer),
-		web.Registry(consulReg),
-	)
+	httpService := http.Init(&consulReg)
+	httpService.Init()
 
-	microService.Init()
-	err := microService.Run()
+	grpcService := grpc.Init(&consulReg)
+	grpcService.Init()
+
+	err := grpcService.Run()
 	if err != nil {
-		panic("micro server register error!")
+		panic("user http server start error!")
+	}
+	err = httpService.Run()
+	if err != nil {
+		panic("user http server start error!")
 	}
 
 	c := make(chan os.Signal, 1)
