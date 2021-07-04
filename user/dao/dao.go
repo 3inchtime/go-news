@@ -1,8 +1,11 @@
 package dao
 
 import (
+	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
+	"github.com/sirupsen/logrus"
+	"user/utils"
 )
 
 type Dao struct {
@@ -16,7 +19,18 @@ func NewDao() *Dao {
 }
 
 func NewDB() *sqlx.DB {
-	Mysql, err := sqlx.Open("mysql", "root:123456@tcp(192.168.1.103:3306)/user?charset=utf8mb4")
+	daoConfig := utils.Config
+	logrus.Infof("init Mysql config: %+v", daoConfig)
+	mysqlConfig := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4",
+		daoConfig.Mysql.User,
+		daoConfig.Mysql.Pwd,
+		daoConfig.Mysql.Host,
+		daoConfig.Mysql.Port,
+		daoConfig.Mysql.Database,
+	)
+	logrus.Infof("init Mysql config: %s", mysqlConfig)
+
+	Mysql, err := sqlx.Open("mysql", mysqlConfig)
 	if err != nil {
 		panic(err)
 	}

@@ -19,6 +19,7 @@ require (
 	github.com/jmoiron/sqlx v1.3.4
 	github.com/kevinburke/ssh_config v1.1.0 // indirect
 	github.com/micro/go-micro/v2 v2.9.1
+	github.com/micro/go-plugins/config/source/consul/v2 v2.9.1
 	github.com/micro/go-plugins/registry/consul/v2 v2.9.1
 	github.com/miekg/dns v1.1.43 // indirect
 	github.com/mitchellh/hashstructure v1.1.0 // indirect
