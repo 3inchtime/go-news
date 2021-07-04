@@ -2,12 +2,15 @@ package server
 
 import "user/service"
 
-type UserServer struct {
+type HTTPServer struct {
 	Service *service.UserService
 }
 
-func NewServer() *UserServer {
-	return &UserServer{
+type GRPCServer struct {
+}
+
+func NewHTTPServer() *HTTPServer {
+	return &HTTPServer{
 		Service: service.NewUserService(),
 	}
 }

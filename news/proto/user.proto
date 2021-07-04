@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package user;
+
+service User {
+    rpc TokenCheck(TokenCheckRequest) returns (TokenCheckResponse) {}
+}
+
+message TokenCheckRequest {
+    string jwt_token = 1;
+}
+
+message TokenCheckResponse {
+    string user_id = 1;
+    string user_name = 2;
+}

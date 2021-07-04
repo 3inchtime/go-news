@@ -10,7 +10,7 @@ import (
 	"user/utils"
 )
 
-func (us *UserServer) CreateNewUser(c *gin.Context) {
+func (us *HTTPServer) CreateNewUser(c *gin.Context) {
 	var ua model.UserAccountInfo
 	if err := c.ShouldBindJSON(&ua); err != nil {
 		c.AbortWithStatusJSON(
@@ -51,7 +51,7 @@ func (us *UserServer) CreateNewUser(c *gin.Context) {
 	return
 }
 
-func (us *UserServer) UserLogin(c *gin.Context) {
+func (us *HTTPServer) UserLogin(c *gin.Context) {
 	var ua model.UserAccountInfo
 	if err := c.ShouldBindJSON(&ua); err != nil {
 		c.AbortWithStatusJSON(
@@ -94,7 +94,7 @@ func (us *UserServer) UserLogin(c *gin.Context) {
 	}
 }
 
-func (us *UserServer) ModifyUser(c *gin.Context) {
+func (us *HTTPServer) ModifyUser(c *gin.Context) {
 	authHeader := c.Request.Header.Get("Authorization")
 	if authHeader == "" {
 		c.JSON(http.StatusForbidden, gin.H{

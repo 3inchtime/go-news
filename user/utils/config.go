@@ -20,8 +20,8 @@ type MysqlConfig struct {
 }
 
 const (
-	Host = "192.168.1.103"
-	Port = 8500
+	Host   = "192.168.1.103"
+	Port   = 8500
 	Prefix = "/go-news/config"
 )
 

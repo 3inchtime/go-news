@@ -19,7 +19,7 @@ func main() {
 	)
 
 	microService := web.NewService(
-		web.Name("go-news-user"),
+		web.Name("go-news-user-http"),
 		web.RegisterTTL(time.Second*30),      //设置注册服务的过期时间
 		web.RegisterInterval(time.Second*20), //设置间隔多久再次注册服务
 		web.Address(":18001"),

@@ -8,7 +8,7 @@ import (
 func Init() *gin.Engine {
 	gin.SetMode(gin.DebugMode)
 
-	userServer := server.NewServer()
+	userServer := server.NewHTTPServer()
 
 	r := gin.New()
 
