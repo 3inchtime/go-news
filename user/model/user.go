@@ -21,7 +21,7 @@ type UserAccountInfo struct {
 }
 
 type UserLoginClaims struct {
-	UserID         string
-	UserName       string
+	UserID   string
+	UserName string
 	jwt.StandardClaims
 }

@@ -104,7 +104,7 @@ func (us *UserServer) ModifyUser(c *gin.Context) {
 	}
 	logrus.Infof("parse jwt token: %s\n", authHeader)
 	ua, err := utils.ParseJWT(authHeader)
-	if err != nil{
+	if err != nil {
 		c.JSON(http.StatusForbidden, gin.H{
 			"error": errors.New("authorization parse failed"),
 		})
