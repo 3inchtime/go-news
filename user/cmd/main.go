@@ -5,6 +5,7 @@ import (
 	"github.com/micro/go-plugins/registry/consul/v2"
 	"os"
 	"os/signal"
+	"sync"
 	"syscall"
 	"user/grpc"
 	"user/http"
@@ -16,25 +17,38 @@ func main() {
 	)
 
 	httpService := http.Init(&consulReg)
-	httpService.Init()
+	err := httpService.Init()
+	if err != nil {
+		panic("user http server init error!")
+	}
 
 	grpcService := grpc.Init(&consulReg)
 	grpcService.Init()
 
-	err := grpcService.Run()
-	if err != nil {
-		panic("user http server start error!")
-	}
-	err = httpService.Run()
-	if err != nil {
-		panic("user http server start error!")
-	}
+	var wg sync.WaitGroup
 
+	wg.Add(1)
+	go func() {
+		err := grpcService.Run()
+		if err != nil {
+			panic("user grpc server start error!")
+		}
+	}()
+
+	go func() {
+		err := httpService.Run()
+		if err != nil {
+			panic("user http server start error!")
+		}
+	}()
+
+	wg.Wait()
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, syscall.SIGHUP, syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGINT)
 	for {
 		switch <-c {
 		case syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGINT:
+			wg.Done()
 			return
 		case syscall.SIGHUP:
 		}
