@@ -50,7 +50,6 @@ func main() {
 	//}
 
 	microService.Init()
-	microService.Run()
 	userService := pb.NewUserService("go-news-user-grpc", microService.Client())
 
 	req := &pb.TokenCheckRequest{
@@ -63,6 +62,7 @@ func main() {
 	}
 	logrus.Errorf("grpc res: %+v", res)
 
+	microService.Run()
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, syscall.SIGHUP, syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGINT)
 	for {
