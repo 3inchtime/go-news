@@ -11,7 +11,6 @@ type HTTPServer struct {
 type GRPCServer struct {
 }
 
-
 func NewHTTPServer() *HTTPServer {
 	return &HTTPServer{
 		Service: service.NewUserService(),
