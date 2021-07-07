@@ -22,17 +22,6 @@ func main() {
 		micro.Registry(consulReg),
 	)
 
-	userService := pb.NewUserService("go-news-user-grpc", microService.Client())
-
-	req := &pb.TokenCheckRequest{
-		JwtToken: "213213122",
-	}
-	ctx := context.Background()
-	res, err := userService.TokenCheck(ctx, req)
-	if err != nil {
-		logrus.Errorf(err.Error())
-	}
-	logrus.Errorf("grpc res: %+v", res)
 	//servers, err := consulReg.GetService("go-news-user-grpc")
 	//if err != nil {
 	//	panic(err)
@@ -61,7 +50,19 @@ func main() {
 	//}
 
 	microService.Init()
-	//microService.Run()
+	microService.Run()
+	userService := pb.NewUserService("go-news-user-grpc", microService.Client())
+
+	req := &pb.TokenCheckRequest{
+		JwtToken: "213213122",
+	}
+	ctx := context.Background()
+	res, err := userService.TokenCheck(ctx, req)
+	if err != nil {
+		logrus.Errorf(err.Error())
+	}
+	logrus.Errorf("grpc res: %+v", res)
+
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, syscall.SIGHUP, syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGINT)
 	for {
