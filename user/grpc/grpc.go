@@ -9,7 +9,7 @@ import (
 
 func Init(register *registry.Registry) micro.Service {
 	microService := micro.NewService(
-		micro.Name("go-news-user-grpc"),
+		micro.Name("user-grpc"),
 		micro.Address(":18002"),
 		micro.Registry(*register),
 	)
