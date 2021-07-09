@@ -8,6 +8,7 @@ import (
 	"user/server"
 )
 
+
 func Init(register *registry.Registry) web.Service {
 	gin.SetMode(gin.DebugMode)
 
